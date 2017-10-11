@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+	
+		canvas {
+			border-style: solid;
+			/*width:320px;
+			height: 420px;*/
+			border-color: black;
+		}
+
+	
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvasOne" width=380px height=520px></canvas>
+
+    <script type="text/javascript">
+        
+		var canvas = document.getElementById("canvasOne");
+		var ctx = canvas.getContext("2d");
+        
+        var ball = {
+            
+            ballXPos: 0,
+            ballYPos: 0,
+            ballRadius: 0,
+            
+            move: function(x, y)
+            {
+                this.ballXPos = this.ballXPos + x;
+                this.ballYPos = this.ballYPos + y;
+            },
+            
+            resize: function(r)
+            {
+                this.ballRadius = this.ballRadius + r;
+            },
+            
+            draw: function(c, s)
+            {
+                ctx.fillStyle = c;
+                ctx.beginPath();
+                ctx.arc(ball.ballXPos, ball.ballYPos, ball.ballRadius, 0, 2*Math.PI);
+                ctx.strokeStyle= s;
+                ctx.fill(); 
+                ctx.stroke();
+            }
+            		
+        };
+        
+        
+        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);
+        
+        ball.move(10,10);
+        
+        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);
+        
+        ball.resize(10);
+        
+        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);
+        
+        var moveX = 0;
+        var moveY = 0;
+        var incR = 0;
+        
+        setInterval(function()
+		{
+            ball.resize(incR);
+            ball.draw("white", "white");
+            
+            moveX += 10;
+            moveY += 10;
+            incR += 2; 
+            
+            ball.move(moveX, moveY);
+            
+            ball.draw("black", "white");
+			
+		}, 100);
+        
+        
+        var pizza = {
+            
+            pizzaXPos: 0,
+            pizzaYPos: 0,
+            pizzaRadius: 0,
+            
+            move: function(x, y)
+            {
+                this.pizzaXPos = this.pizzaXPos + x;
+                this.pizzaYPos = this.pizzaYPos + y;
+            },
+            
+            resize: function(r)
+            {
+                this.pizzaRadius = this.pizzaRadius + r;
+            },
+            
+            draw: function(c, s)
+            {
+                ctx.fillStyle = c;
+                ctx.beginPath();
+                ctx.arc(pizza.pizzaXPos, pizza.pizzaYPos, pizza.pizzaRadius, 0, 2*Math.PI);
+                ctx.strokeStyle= s;
+                ctx.fill();
+            
+            }
+            		
+        };
+        
+        pizza.move(150,150);
+        pizza.resize(100);
+        pizza.draw("orange", "Black");
+        pizza.resize(-10);
+        pizza.draw("orange", "Black");        
+
+        
+
+    </script>
+
+  </body>
+
+</html>

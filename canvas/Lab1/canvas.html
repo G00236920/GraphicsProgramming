@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+	
+		canvas {
+			border-style: solid;
+			/*width:320px;
+			height: 420px;*/
+			border-color: black;
+		}
+
+	
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvasOne" width=380px height=720px></canvas>
+
+    <script type="text/javascript">
+		var canvas = document.getElementById("canvasOne");
+		var ctx = canvas.getContext("2d");
+		ctx.fillStyle = "rgb(255, 0, 255)";
+		ctx.fillRect(10, 10, 160, 100);
+		ctx.strokeStyle="yellow";
+		ctx.stroke();
+		
+		ctx.fillStyle = "rgb(255, 150, 0)";
+		ctx.fillRect(200, 10, 160, 100);
+		ctx.strokeStyle="blue";
+		ctx.stroke();
+		
+		ctx.fillStyle = "rgb(155, 150, 0)";
+		ctx.beginPath();
+		ctx.arc(80, 240, 70, 0, 2*Math.PI);
+		ctx.fill(); 
+		ctx.strokeStyle="blue";
+		ctx.stroke();		
+		
+		ctx.fillStyle = "rgb(255, 150, 100)";
+		ctx.beginPath();
+		ctx.arc(250, 240, 70, 0, 2*Math.PI);
+		ctx.fill();
+		ctx.strokeStyle="navy";
+		ctx.stroke();
+		
+		var x = 200;
+		var y = 400;
+		
+		var a = 100;
+		var b =	100;
+		
+		ctx.fillStyle = "rgb(255, 0, 255)";
+		ctx.fillRect(x, y, a, b);
+		
+		ctx.fillStyle = "rgb(255, 150, 100)";
+		ctx.beginPath();
+		ctx.arc(x+(a/2), y+(b/2), 50, 0, 2*Math.PI);
+		ctx.fill();
+		ctx.strokeStyle="navy";
+		ctx.stroke();
+		
+		var c = 75;
+		var d = 600;
+		var r = 70;
+		
+		setInterval(function()
+		{
+			ctx.fillStyle = "rgb(255,255,255)";
+			ctx.beginPath();
+			ctx.arc(c, d, r, 0, 2*Math.PI);
+			ctx.fill();
+			ctx.strokeStyle="white";
+			ctx.lineWidth=2;
+			ctx.stroke();
+			
+			c+=50;
+
+			
+			ctx.fillStyle = "rgb(255,255,0)";
+			ctx.beginPath();
+			ctx.arc(c, d, r, Math.PI/4, 1.75*Math.PI);
+			ctx.lineTo(c, d);
+			ctx.lineTo(c + (r*Math.cos(Math.PI/4)), d + (r*Math.sin(Math.PI/4)));
+			ctx.strokeStyle="black";
+			ctx.lineWidth=1;
+			ctx.stroke();
+			ctx.fill();
+			
+		}, 100);
+		
+		
+    </script>
+
+  </body>
+
+</html>
