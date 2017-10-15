@@ -49,44 +49,78 @@
             
             draw() {                                                             /* Draw the Ball */
 
-                
-            var increaseV = 0;    
-                
-            setInterval(function()                                               /* Set interval */
-            {
-                
-            //ctx.clearRect(pizzaXPos, pizzaYPos, pizzaRadius, pizzaRadius);
-                
-            ctx.fillStyle = "orange";
-			ctx.beginPath();                                                     /* Start the cicle */
-			ctx.arc(pizza.pizzaXPos, pizza.pizzaYPos, pizza.pizzaRadius, 0, 2*Math.PI);
+                var increaseV = 0;    
+                var yAxis = 10;
+                var xAxis = 3;
+                var direction = 1;
 
-			ctx.strokeStyle="black";                                             /* Colour the Ball */
-			ctx.lineWidth = 2;
-             ctx.fill();                                                
-                
-                increaseV += 0.03;
-                
-                    for(var i = 0; i <= 6; i++){                                   /* Move the ball by increasing i */
-                        ctx.strokeStyle="black";
-                        ctx.moveTo(pizza.pizzaXPos + (pizza.pizzaRadius*Math.cos(2*Math.PI/7*i+increaseV)), pizza.pizzaYPos + (pizza.pizzaRadius * Math.sin(2*Math.PI/7 *i+increaseV)));
+                setInterval(function()                                               /* Set interval */
+                {
 
-                        ctx.lineTo(pizza.pizzaXPos, pizza.pizzaYPos);
+                    ctx.clearRect(0, 0, 380, 520);
 
+                    if( pizza.pizzaYPos >= 520){
+
+                        yAxis = -10;                                        /* make the ball travel Up  */
+                        direction = -1;                                     /*  Change Ball Spin Direction */
+                        
                     }
+                    else if (pizza.pizzaYPos <= 0){
 
-                ctx.stroke();
+                        yAxis = 10;                                         /* make the ball travel Down  */
+                        direction = 1;                                      /*  Change Ball Spin Direction */
+                    }   
+                    
+                    if( pizza.pizzaXPos >= 380){
 
-            }, 30);
-			
-        }
+                        xAxis = -10;                                        /* make the ball travel Left  */
+                        direction = -1;                                     /*  Change Ball Spin Direction */
+                        
+                    }
+                    else if (pizza.pizzaXPos <= 0){
+
+                        xAxis = 10;                                         /* make the ball travel right  */
+                        direction = 1;                                      /*  Change Ball Spin Direction */
+                    } 
+                    
+                    pizza.pizzaYPos += yAxis;
+                    pizza.pizzaXPos += xAxis;
+
+
+
+                    ctx.fillStyle = "orange";
+                    ctx.beginPath();                                                     /* Start the cicle */
+                    ctx.arc(pizza.pizzaXPos, pizza.pizzaYPos, pizza.pizzaRadius, 0, 2*Math.PI);
+
+                    ctx.strokeStyle="black";                                             /* Colour the Ball */
+                    ctx.lineWidth = 2;
+                    ctx.fill();                                                
+
+                        increaseV += 0.03 * direction;
+
+                            for(var i = 0; i <= 6; i++){                                   /* Move the ball by increasing i */
+                                ctx.strokeStyle="black";
+                                ctx.moveTo(pizza.pizzaXPos + (pizza.pizzaRadius*Math.cos(2*Math.PI/7*i+increaseV)), pizza.pizzaYPos + (pizza.pizzaRadius * Math.sin(2*Math.PI/7 *i+increaseV)));
+
+                                ctx.lineTo(pizza.pizzaXPos, pizza.pizzaYPos);
+                            }
+
+
+                        ctx.stroke();
+
+                    }, 30);
+
+            }
                     
             		
         };
         
-        pizza.move(pizza.pizzaXPos,pizza.pizzaYPos);                                    /* Move the pizza */
+
+        pizza.move( pizza.pizzaXPos, pizza.pizzaYPos );                                                
         pizza.resize(30);                                                               /* Resize */
         pizza.draw(6);                                                                  /* Draw Again */
+
+
         
 
     </script>
