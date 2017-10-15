@@ -91,9 +91,9 @@
         
         var pizza = {
             
-            pizzaXPos: 0,
-            pizzaYPos: 0,
-            pizzaRadius: 0,
+            pizzaXPos: 60,
+            pizzaYPos: 200,
+            pizzaRadius: 6,
             
             move: function(x, y)
             {
@@ -106,25 +106,44 @@
                 this.pizzaRadius = this.pizzaRadius + r;
             },
             
-            draw: function(c, s)
+            draw() {
+
+                
+            var increaseV = 0;    
+                
+            setInterval(function()
             {
-                ctx.fillStyle = c;
-                ctx.beginPath();
-                ctx.arc(pizza.pizzaXPos, pizza.pizzaYPos, pizza.pizzaRadius, 0, 2*Math.PI);
-                ctx.strokeStyle= s;
-                ctx.fill();
-            
-            }
+            ctx.fillStyle = "orange";
+			ctx.beginPath(); 
+			ctx.arc(pizza.pizzaXPos, pizza.pizzaYPos, pizza.pizzaRadius, 0, 2*Math.PI);
+
+			ctx.strokeStyle="black";
+			ctx.lineWidth = 2;
+             ctx.fill();
+                
+                increaseV += 0.03;
+                
+                    for(var i = 0; i <= 6; i++){
+                        ctx.strokeStyle="black";
+                        ctx.moveTo(pizza.pizzaXPos + (pizza.pizzaRadius*Math.cos(2*Math.PI/7*i+increaseV)), pizza.pizzaYPos + (pizza.pizzaRadius * Math.sin(2*Math.PI/7 *i+increaseV)));
+
+                        ctx.lineTo(pizza.pizzaXPos, pizza.pizzaYPos);
+
+                    }
+
+                ctx.stroke();
+
+            }, 30);
+			
+        }
+                    
             		
         };
         
-        pizza.move(150,150);
-        pizza.resize(100);
-        pizza.draw("orange", "Black");
-        pizza.resize(-10);
-        pizza.draw("orange", "Black");        
+        pizza.move(pizza.pizzaXPos,pizza.pizzaYPos);
 
-        
+        pizza.resize(90);
+        pizza.draw(6);
 
     </script>
 
