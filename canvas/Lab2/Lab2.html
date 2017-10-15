@@ -8,7 +8,7 @@
 
     <style type="text/css">
 	
-		canvas {
+		canvas {                          /* Style the canvas */
 			border-style: solid;
 			/*width:320px;
 			height: 420px;*/
@@ -31,60 +31,60 @@
         
         var ball = {
             
-            ballXPos: 0,
-            ballYPos: 0,
-            ballRadius: 0,
+            ballXPos: 0,                /* Balls Position on x axis */
+            ballYPos: 0,                /* Balls position on Y axis */
+            ballRadius: 0,              /* Radius of the ball */
             
             move: function(x, y)
             {
-                this.ballXPos = this.ballXPos + x;
-                this.ballYPos = this.ballYPos + y;
+                this.ballXPos = this.ballXPos + x;  /* move the ball along the X axis */
+                this.ballYPos = this.ballYPos + y;  /* Move the ball along the Y axis */
             },
             
             resize: function(r)
             {
-                this.ballRadius = this.ballRadius + r;
+                this.ballRadius = this.ballRadius + r;      /* Increase Radius by r */
             },
             
-            draw: function(c, s)
-            {
-                ctx.fillStyle = c;
-                ctx.beginPath();
+            draw: function(c, s)                            /* Draw the Ball */
+            {       
+                ctx.fillStyle = c;                          /* Fill with colour */
+                ctx.beginPath();                            /* Start Path */
                 ctx.arc(ball.ballXPos, ball.ballYPos, ball.ballRadius, 0, 2*Math.PI);
-                ctx.strokeStyle= s;
-                ctx.fill(); 
-                ctx.stroke();
+                ctx.strokeStyle= s;                         /* Fill with colour */
+                ctx.fill();                                 /* Fill */
+                ctx.stroke();                               /* Create lines */
             }
             		
         };
         
         
-        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);
+        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);             /* Print x and y console */
         
         ball.move(10,10);
         
-        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);
-        
+        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);              /* Print x and y console */
+            
         ball.resize(10);
         
-        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);
+        console.log(ball.ballXPos, ball.ballYPos, ball.ballRadius);              /* Print x and y console */
         
-        var moveX = 0;
+        var moveX = 0;                                                           /* Values for moving and resizing ball*/
         var moveY = 0;
         var incR = 0;
         
-        setInterval(function()
-		{
-            ball.resize(incR);
-            ball.draw("white", "white");
+        setInterval(function()                                                   /* Interval function */
+		{     
+            ball.resize(incR);                                                   /* increase ball radius */
+            ball.draw("white", "white");                                         /* Draw Ball */
             
-            moveX += 10;
+            moveX += 10;                                    
             moveY += 10;
             incR += 2; 
             
-            ball.move(moveX, moveY);
+            ball.move(moveX, moveY);                                              
             
-            ball.draw("black", "white");
+            ball.draw("black", "white");                                        /* Move the ball */
 			
 		}, 100);
         
@@ -95,35 +95,35 @@
             pizzaYPos: 200,
             pizzaRadius: 6,
             
-            move: function(x, y)
+            move: function(x, y)                                                /* Move the ball along the x and y axis*/
             {
                 this.pizzaXPos = this.pizzaXPos + x;
                 this.pizzaYPos = this.pizzaYPos + y;
             },
             
-            resize: function(r)
+            resize: function(r)                                                 /* Increase r to increase size */
             {
                 this.pizzaRadius = this.pizzaRadius + r;
             },
             
-            draw() {
+            draw() {                                                             /* Draw the Ball */
 
                 
             var increaseV = 0;    
                 
-            setInterval(function()
+            setInterval(function()                                               /* Set interval */
             {
             ctx.fillStyle = "orange";
-			ctx.beginPath(); 
+			ctx.beginPath();                                                     /* Start the cicle */
 			ctx.arc(pizza.pizzaXPos, pizza.pizzaYPos, pizza.pizzaRadius, 0, 2*Math.PI);
 
-			ctx.strokeStyle="black";
+			ctx.strokeStyle="black";                                             /* Colour the Ball */
 			ctx.lineWidth = 2;
-             ctx.fill();
+             ctx.fill();                                                
                 
                 increaseV += 0.03;
                 
-                    for(var i = 0; i <= 6; i++){
+                    for(var i = 0; i <= 6; i++){                                   /* Move the ball by increasing i */
                         ctx.strokeStyle="black";
                         ctx.moveTo(pizza.pizzaXPos + (pizza.pizzaRadius*Math.cos(2*Math.PI/7*i+increaseV)), pizza.pizzaYPos + (pizza.pizzaRadius * Math.sin(2*Math.PI/7 *i+increaseV)));
 
@@ -140,10 +140,10 @@
             		
         };
         
-        pizza.move(pizza.pizzaXPos,pizza.pizzaYPos);
+        pizza.move(pizza.pizzaXPos,pizza.pizzaYPos);                                    /* Move the pizza */
 
-        pizza.resize(90);
-        pizza.draw(6);
+        pizza.resize(90);                                                               /* Resize */
+        pizza.draw(6);                                                                  /* Draw Again */
 
     </script>
 
