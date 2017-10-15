@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+	
+		canvas {                          /* Style the canvas */
+			border-style: solid;
+			/*width:320px;
+			height: 420px;*/
+			border-color: black;
+		}
+
+	
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvasOne" width=380px height=520px></canvas>
+
+    <script type="text/javascript">
+        
+		var canvas = document.getElementById("canvasOne");
+		var ctx = canvas.getContext("2d");
+        
+        
+        var pizza = {
+            
+            pizzaXPos: 90,
+            pizzaYPos: 20,
+            pizzaRadius: 6,
+            
+            move: function(x, y)                                                /* Move the ball along the x and y axis*/
+            {
+                this.pizzaXPos = this.pizzaXPos + x;
+                this.pizzaYPos = this.pizzaYPos + y;
+            },
+            
+            resize: function(r)                                                 /* Increase r to increase size */
+            {
+                this.pizzaRadius = this.pizzaRadius + r;
+            },
+            
+            draw() {                                                             /* Draw the Ball */
+
+                
+            var increaseV = 0;    
+                
+            setInterval(function()                                               /* Set interval */
+            {
+                
+            //ctx.clearRect(pizzaXPos, pizzaYPos, pizzaRadius, pizzaRadius);
+                
+            ctx.fillStyle = "orange";
+			ctx.beginPath();                                                     /* Start the cicle */
+			ctx.arc(pizza.pizzaXPos, pizza.pizzaYPos, pizza.pizzaRadius, 0, 2*Math.PI);
+
+			ctx.strokeStyle="black";                                             /* Colour the Ball */
+			ctx.lineWidth = 2;
+             ctx.fill();                                                
+                
+                increaseV += 0.03;
+                
+                    for(var i = 0; i <= 6; i++){                                   /* Move the ball by increasing i */
+                        ctx.strokeStyle="black";
+                        ctx.moveTo(pizza.pizzaXPos + (pizza.pizzaRadius*Math.cos(2*Math.PI/7*i+increaseV)), pizza.pizzaYPos + (pizza.pizzaRadius * Math.sin(2*Math.PI/7 *i+increaseV)));
+
+                        ctx.lineTo(pizza.pizzaXPos, pizza.pizzaYPos);
+
+                    }
+
+                ctx.stroke();
+
+            }, 30);
+			
+        }
+                    
+            		
+        };
+        
+        pizza.move(pizza.pizzaXPos,pizza.pizzaYPos);                                    /* Move the pizza */
+        pizza.resize(30);                                                               /* Resize */
+        pizza.draw(6);                                                                  /* Draw Again */
+        
+
+    </script>
+
+  </body>
+
+</html>
