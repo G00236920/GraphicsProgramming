@@ -8,7 +8,7 @@
 
     <style type="text/css">
 	
-		canvas {
+		canvas {                      /* Border for the canvas */
 			border-style: solid;
 			/*width:320px;
 			height: 420px;*/
@@ -22,79 +22,78 @@
 
   <body>
 
-    <canvas id="canvasOne" width=380px height=720px></canvas>
+    <canvas id="canvasOne" width=380px height=720px></canvas>  /*  */
 
     <script type="text/javascript">
-		var canvas = document.getElementById("canvasOne");
-		var ctx = canvas.getContext("2d");
-		ctx.fillStyle = "rgb(255, 0, 255)";
-		ctx.fillRect(10, 10, 160, 100);
-		ctx.strokeStyle="yellow";
+		var canvas = document.getElementById("canvasOne");    /* get element using DOM */
+		var ctx = canvas.getContext("2d");                    /* Style the canvas */
+		ctx.fillStyle = "rgb(255, 0, 255)";                   /* Colour the canvas */
+		ctx.fillRect(10, 10, 160, 100);                       /* Create rectangle */
+		ctx.strokeStyle="yellow";                             /* Colour the stroke */
 		ctx.stroke();
 		
-		ctx.fillStyle = "rgb(255, 150, 0)";
-		ctx.fillRect(200, 10, 160, 100);
-		ctx.strokeStyle="blue";
+		ctx.fillStyle = "rgb(255, 150, 0)";                   /* Change colour */
+		ctx.fillRect(200, 10, 160, 100);                      /* Create rectangle */
+		ctx.strokeStyle="blue";                               /* Colour rectangle */
 		ctx.stroke();
 		
-		ctx.fillStyle = "rgb(155, 150, 0)";
-		ctx.beginPath();
-		ctx.arc(80, 240, 70, 0, 2*Math.PI);
-		ctx.fill(); 
-		ctx.strokeStyle="blue";
-		ctx.stroke();		
+		ctx.fillStyle = "rgb(155, 150, 0)";                   /* change color */
+		ctx.beginPath();                                      /* Start the first line */
+		ctx.arc(80, 240, 70, 0, 2*Math.PI);                   /* Create arc, which creates circle */
+		ctx.fill();                                           /* Fill with previous colour */
+		ctx.strokeStyle="blue";                               /* Colour the stroke for the circle */
+		ctx.stroke();		                                  /* Start Stroke */
 		
-		ctx.fillStyle = "rgb(255, 150, 100)";
-		ctx.beginPath();
-		ctx.arc(250, 240, 70, 0, 2*Math.PI);
-		ctx.fill();
-		ctx.strokeStyle="navy";
-		ctx.stroke();
+		ctx.fillStyle = "rgb(255, 150, 100)";                 /* Colour the CTX */
+		ctx.beginPath();                                      /* Start path */
+		ctx.arc(250, 240, 70, 0, 2*Math.PI);                  /* Create the circles path */
+		ctx.fill();                                           /* Fill the circle with colour */
+		ctx.strokeStyle="navy";                               /* Choose the stroke colour */
+		ctx.stroke();                                         /* Start the Stroke */
 		
-		var x = 200;
+		var x = 200;                                          
 		var y = 400;
 		
 		var a = 100;
 		var b =	100;
+		  
+		ctx.fillStyle = "rgb(255, 0, 255)";                   /* Choose fill style */
+		ctx.fillRect(x, y, a, b);                             /* create rectangle */
 		
-		ctx.fillStyle = "rgb(255, 0, 255)";
-		ctx.fillRect(x, y, a, b);
-		
-		ctx.fillStyle = "rgb(255, 150, 100)";
-		ctx.beginPath();
-		ctx.arc(x+(a/2), y+(b/2), 50, 0, 2*Math.PI);
-		ctx.fill();
-		ctx.strokeStyle="navy";
-		ctx.stroke();
+		ctx.fillStyle = "rgb(255, 150, 100)";                 /* Choose rectangle colour */
+		ctx.beginPath();                                      /* Start Path */
+		ctx.arc(x+(a/2), y+(b/2), 50, 0, 2*Math.PI);          /* Create Circle arc */
+		ctx.fill();                                           /* fill */
+		ctx.strokeStyle="navy";                               /* Choose stroke colour */
+		ctx.stroke();                                         /* Start */
 		
 		var c = 75;
 		var d = 600;
 		var r = 70;
 		
-		setInterval(function()
+		setInterval(function()                                /* Function to set interval and repeat continuously */
 		{
-			ctx.fillStyle = "rgb(255,255,255)";
-			ctx.beginPath();
-			ctx.arc(c, d, r, 0, 2*Math.PI);
-			ctx.fill();
-			ctx.strokeStyle="white";
-			ctx.lineWidth=2;
-			ctx.stroke();
+			ctx.fillStyle = "rgb(255,255,255)";              /* Choose Colour of circle - white */
+			ctx.beginPath();                                 /* Start Path */
+			ctx.arc(c, d, r, 0, 2*Math.PI);                  /*  Create circle */
+			ctx.fill();                                      /* Fill with colour */
+			ctx.strokeStyle="white";                         /* COlour white for that the image is blank when redrawn */
+			ctx.lineWidth=2;                                 /* Line width of 2 */
+			ctx.stroke();                                    /* Start stroke */
 			
 			c+=50;
-
 			
-			ctx.fillStyle = "rgb(255,255,0)";
-			ctx.beginPath();
-			ctx.arc(c, d, r, Math.PI/4, 1.75*Math.PI);
-			ctx.lineTo(c, d);
+			ctx.fillStyle = "rgb(255,255,0)";                /* Choose colour Yellow */
+			ctx.beginPath();                                 /* Begin Path */
+			ctx.arc(c, d, r, Math.PI/4, 1.75*Math.PI);       /* Create pacman by only creating 3/4 of a circle */
+			ctx.lineTo(c, d);                                /* Line to centre */
 			ctx.lineTo(c + (r*Math.cos(Math.PI/4)), d + (r*Math.sin(Math.PI/4)));
-			ctx.strokeStyle="black";
+			ctx.strokeStyle="black";                         /* Black line */
 			ctx.lineWidth=1;
-			ctx.stroke();
-			ctx.fill();
+            ctx.stroke();                                    /* Start Stroke */
+			ctx.fill();                                      /* Fill with colour */
 			
-		}, 100);
+		}, 100);                                              /* repeat 10 times per second */
 		
 		
     </script>
