@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+	
+		canvas {                          /* Style the canvas */
+			border-style: solid;
+			/*width:320px;
+			height: 420px;*/
+			border-color: black;
+		}
+	
+    </style>
+      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvasOne" width=380px height=520px></canvas>
+    
+
+    <script type="text/javascript">
+    
+    //When i Designed Lab 4 i designed it in mind to also cover the idea behind lab 5
+
+        //Canvas 1
+		var canvas = document.getElementById("canvasOne");
+
+        //Pen 1
+		var ctx = canvas.getContext("2d");
+
+		// Make the fill style red.
+		ctx.fillStyle = "rgb(255, 0, 0)";
+
+		// Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			
+            // Just log the event to the console.
+			console.log(event);
+
+		});
+
+        //Ball Object
+
+        class Ball {
+            
+            //Constructor for ball
+            constructor(xPos, yPos, radius, startPoint, rotate, colour){
+                
+                this.ballXPos   = xPos;                            //Ball Y position
+                this.ballYPos   = yPos;                            //Ball X position
+                this.ballRadius = radius;                          //Ball Radius
+                this.startPoint = startPoint;                      //Starting point for Drawing
+                this.rotate     = rotate;                          //Amount to Rotate the ball by
+                this.colour     = colour;
+            }
+            
+             
+            move(x, y)                                                /* Move the ball along the x and y axis*/
+            {
+                this.ballXPos += x;
+                this.ballYPos += y;
+            }
+            
+             
+            resize (r)                                                  /* Increase r to increase size */
+            {
+                this.ballRadius = this.ballRadius + r;                  //Resize Ball
+            }
+            
+             
+            rotation(inc)
+            {
+                this.rotate += inc;                                     //Rotate Ball
+            }
+
+            changeColour(col)
+            {
+                console.log("TEST");
+                ctx.fillStyle = col;
+            }
+             
+             
+            draw() {                                                       /* Draw the Ball */
+   
+                var yAxis = 10;
+                var xAxis = 3;
+                var seed = 0;
+
+                    var r = Math.floor(Math.random()*256);          // Random between 0-255
+                    var g = Math.floor(Math.random()*256);          // Random between 0-255
+                    var b = Math.floor(Math.random()*256);          // Random between 0-255
+                
+                    this.changeColour('rgb(' + r + ',' + g + ',' + b + ')');        //Change the colour
+
+                    ctx.beginPath();                                                     /* Start the cicle */
+                    ctx.arc(this.ballXPos, this.ballYPos, this.ballRadius, this.startPoint, 2*Math.PI);
+
+                    ctx.strokeStyle="black";                                             /* Colour the Ball */
+                    ctx.lineWidth = 2;                                                      //width of line
+                    ctx.fill();                                                             //Fill ball with colour                       
+
+                        for(var i = 0; i <= 6; i++){                                    /* Move the ball by increasing i */
+
+                            ctx.strokeStyle="black";                                    //Black pen stroke
+
+                            ctx.moveTo(this.ballXPos + (                                //Move ball, calculate arc
+                                this.ballRadius*Math.cos(2*Math.PI/7*i+this.rotate)), 
+                                    this.ballYPos + (this.ballRadius * Math.sin(2*Math.PI/7 *i+this.rotate)));
+                                    
+                            ctx.lineTo(this.ballXPos, this.ballYPos);                   //create line to centre of circle
+                        }
+
+                    ctx.stroke();                                                       //Create lines
+
+            }		
+        
+         };
+    
+        
+        
+//Implementation        
+        
+        function init() {
+
+            
+        
+        } init();                                                                           //Init this function when page starts
+
+            const b1 = new Ball(50, 50, 40, 0, 0, "orange");                                 //Ball 1
+            const b2 = new Ball(200, 300, 60, 0, 0, "red");                                  //Ball 2
+
+            var x = 10;                                                                     //Ball 1 x coords
+            var y = 10;                                                                     //Ball 1 y coords
+
+            var x1 = 10;                                                                    //Ball 2 x coords
+            var y1 = 10;                                                                    //Ball 3 y coords
+
+            var v = 1;                                                                      //Velocity multiplier
+            var r = .5;                                                                     //Rotation for balls
+
+
+
+        $(document.body).on('keydown', function(e) {                                    //When key down
+
+            console.log(e.which);                                                       //log key press
+            //Print to console
+            
+            switch (e.which) {                                      //Switch for keypresses
+                case 37:                                            //left key
+
+                r += -.1;
+
+                break;
+                case 38:                                            //up key
+                    if(v < 1){
+                        v = 1;
+                    }
+                    if(v > 5){
+                        v = 5;
+                    }
+
+                    v = v * 1.2;
+                break;
+                case 39:                                            //right key
+
+                r += .1;    
+
+                break;
+                case 40:                                            //down key
+
+                    if(v < 1){
+                        v = 0;
+                    }
+
+                    v = v * .8;
+                break;
+            }
+        }); 
+        
+        setInterval(function() {                                    
+
+
+//Ball 1 Condition            
+            if(b1.ballXPos >= 380 - b1.ballRadius || b1.ballXPos <= 0 + b1.ballRadius){
+                x *= -1;
+            }   
+            if(b1.ballYPos >= 520 - b1.ballRadius || b1.ballYPos <= 0 + b1.ballRadius){
+                y *= -1;
+            }  
+//Keep the ball inside the canvas
+
+//Ball 2 Condition
+            if(b2.ballXPos >= 380 - b2.ballRadius || b2.ballXPos <= 0 + b2.ballRadius){
+                x1 *= -1;
+            }   
+            if(b2.ballYPos >= 520 - b2.ballRadius || b2.ballYPos <= 0 + b2.ballRadius){
+                y1 *= -1;
+            }  
+//Keep the ball inside the canvas
+
+            if(Math.hypot(b1.ballXPos-b2.ballXPos, b1.ballYPos-b2.ballYPos) <= (b1.ballRadius + b2.ballRadius)){
+                console.log("Collision Detected");
+                x *= -1;
+                y *= -1;
+                x1 *= -1;
+                y1 *= -1;
+            }
+//Detect if the two balls intersect and change direction
+
+
+            ctx.clearRect(0, 0, 380, 520);
+            //Clear the canvas
+                    
+            b1.rotation(r);                     //Rotate the ball 1
+            b1.move(x * v, y * v);              //move ball 1
+            b1.draw();                          //draw ball 1
+
+            b2.rotation(r);                     //rotate ball 2
+            b2.move(x1 * v, y1 * v);            //move ball 2
+            b2.draw();                          //draw ball 2
+            
+        },100);                                 //set interval to 1/10 of a second
+
+        canvas.addEventListener("click", function(event) {              //listen for mouse click
+
+            
+            var e = window.event;                                       // event saved as variable
+            
+            b1.ballXPos = e.pageX - $('#canvasOne').offset().left;      //get X position of mouse click
+            b1.ballYPos = e.pageY - $('#canvasOne').offset().top;       //get y position of mouse click
+        
+        });
+        
+        
+    </script>
+
+  </body>
+
+</html>
