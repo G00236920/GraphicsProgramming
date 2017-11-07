@@ -11,6 +11,8 @@
         border: 1px solid grey; 
       }
     </style>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
   </head>
 
@@ -20,7 +22,8 @@
     <canvas id="canvas-for-ball"></canvas>
 
     <script type="text/javascript">
-      var noClicks = 0;
+      
+        var noClicks = 0;
       
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("canvas-for-ball");
@@ -30,12 +33,24 @@
       ctx.fillStyle = "rgb(255, 0, 0)";
       
       canvas.addEventListener("click", function(event) { 
+          
+        var xPos = 50;
+        var yPos = 50;
+        var radius = 6;
+        var startPoint = 0;
+          
+        var e = window.event;
+          
+        xPos = e.pageX - $('#canvas-for-ball').offset().left;
+        yPos = e.pageY - $('#canvas-for-ball').offset().top;
+          
         ctx.beginPath();
-        ctx.arc(50, 50, 6, 0, 2 * Math.PI);
+        ctx.arc(xPos, yPos, radius, startPoint, 2 * Math.PI);
         ctx.fill();
         
         noClicks += 1;
         console.log(noClicks);
+        console.log(xPos, yPos);
       });
     </script>
 

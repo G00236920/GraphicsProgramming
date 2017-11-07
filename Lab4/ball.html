@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+	
+		canvas {                          /* Style the canvas */
+			border-style: solid;
+			/*width:320px;
+			height: 420px;*/
+			border-color: black;
+		}
+	
+    </style>
+      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvasOne" width=380px height=520px></canvas>
+    <canvas id="canvasTwo" width=380px height=520px></canvas>
+    
+
+    <script type="text/javascript">
+    
+
+        //Canvas 1
+		var canvas = document.getElementById("canvasOne");
+
+        //Pen 1
+		var ctx = canvas.getContext("2d");
+
+		// Make the fill style red.
+		ctx.fillStyle = "rgb(255, 0, 0)";
+
+		// Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			
+            // Just log the event to the console.
+			console.log(event);
+
+		});
+
+        //Ball Object
+
+        class Ball {
+            
+            //Constructor for ball
+            constructor(xPos, yPos, radius, startPoint, rotate, colour){
+                
+                this.ballXPos   = xPos;                            //Ball Y position
+                this.ballYPos   = yPos;                            //Ball X position
+                this.ballRadius = radius;                          //Ball Radius
+                this.startPoint = startPoint;                      //Starting point for Drawing
+                this.rotate     = rotate;                          //Amount to Rotate the ball by
+                this.colour     = colour;
+            }
+            
+             
+            move(x, y)                                                /* Move the ball along the x and y axis*/
+            {
+                this.ballXPos += x;
+                this.ballYPos += y;
+            }
+            
+             
+            resize (r)                                                  /* Increase r to increase size */
+            {
+                this.ballRadius = this.ballRadius + r;                  //Resize Ball
+            }
+            
+             
+            rotation(inc)
+            {
+                this.rotate += inc;                                     //Rotate Ball
+            }
+             
+             
+            draw() {                                                       /* Draw the Ball */
+   
+                var yAxis = 10;
+                var xAxis = 3;
+                
+
+                    ctx.fillStyle = this.colour;
+                    ctx.beginPath();                                                     /* Start the cicle */
+                    ctx.arc(this.ballXPos, this.ballYPos, this.ballRadius, this.startPoint, 2*Math.PI);
+
+                    ctx.strokeStyle="black";                                             /* Colour the Ball */
+                    ctx.lineWidth = 2;                                                      //width of line
+                    ctx.fill();                                                             //Fill ball with colour                       
+
+                        for(var i = 0; i <= 6; i++){                                    /* Move the ball by increasing i */
+
+                            ctx.strokeStyle="black";                                    //Black pen stroke
+
+                            ctx.moveTo(this.ballXPos + (                                //Move ball, calculate arc
+                                this.ballRadius*Math.cos(2*Math.PI/7*i+this.rotate)), 
+                                    this.ballYPos + (this.ballRadius * Math.sin(2*Math.PI/7 *i+this.rotate)));
+                                    
+                            ctx.lineTo(this.ballXPos, this.ballYPos);                   //create line to centre of circle
+                        }
+
+                    ctx.stroke();                                                       //Create lines
+
+            }		
+        
+         };
+    
+        
+        
+//Implementation        
+        
+        
+        const b1 = new Ball(50, 50, 40, 0, 0, "orange");                                 //Ball 1
+        const b2 = new Ball(200, 300, 40, 0, 0, "red");                                  //Ball 2
+
+        var x = 10;                                                                     //Ball 1 x coords
+        var y = 10;                                                                     //Ball 1 y coords
+
+        var x1 = 10;                                                                    //Ball 2 x coords
+        var y1 = 10;                                                                    //Ball 3 y coords
+
+        var v = 1;                                                                      //Velocity multiplier
+        var r = .5;                                                                     //Rotation for balls
+
+        
+        $(document.body).on('keydown', function(e) {                                    //When key down
+
+            console.log(e.which);                                                       //log key press
+            //Print to console
+            
+            switch (e.which) {                                                          //Switch for keypresses
+                case 37:                                                                //left key
+
+                r += -.1;
+
+                break;
+                case 38:                                                                //up key
+                    if(v < 1){
+                        v = 1;
+                    }
+                    if(v > 5){
+                        v = 5;
+                    }
+
+                    v = v * 1.2;
+                break;
+                case 39:                                                                //right key
+
+                r += .1;    
+
+                break;
+                case 40:                                                                //down key
+
+                    if(v < 1){
+                        v = 0;
+                    }
+
+                    v = v * .8;
+                break;
+            }
+        }); 
+        
+        setInterval(function() {                                    
+
+
+//Ball 1 Condition            
+            if(b1.ballXPos >= 380 - b1.ballRadius || b1.ballXPos <= 0 + b1.ballRadius){
+                x *= -1;
+            }   
+            if(b1.ballYPos >= 520 - b1.ballRadius || b1.ballYPos <= 0 + b1.ballRadius){
+                y *= -1;
+            }  
+//Keep the ball inside the canvas
+
+//Ball 2 Condition
+            if(b2.ballXPos >= 380 - b2.ballRadius || b2.ballXPos <= 0 + b2.ballRadius){
+                x1 *= -1;
+            }   
+            if(b2.ballYPos >= 520 - b2.ballRadius || b2.ballYPos <= 0 + b2.ballRadius){
+                y1 *= -1;
+            }  
+//Keep the ball inside the canvas
+
+            if(Math.hypot(b1.ballXPos-b2.ballXPos, b1.ballYPos-b2.ballYPos) <= (b1.ballRadius + b2.ballRadius)){
+                console.log("Collision Detected");
+                x *= -1;
+                y *= -1;
+                x1 *= -1;
+                y1 *= -1;
+            }
+//Detect if the two balls intersect and change direction
+
+
+            ctx.clearRect(0, 0, 380, 520);
+            //Clear the canvas
+                    
+            b1.rotation(r);                     //Rotate the ball 1
+            b1.move(x * v, y * v);              //move ball 1
+            b1.draw();                          //draw ball 1
+
+            b2.rotation(r);                     //rotate ball 2
+            b2.move(x1 * v, y1 * v);            //move ball 2
+            b2.draw();                          //draw ball 2
+            
+        },100);                                 //set interval to 1/10 of a second
+
+        canvas.addEventListener("click", function(event) {              //listen for mouse click
+
+            
+            var e = window.event;                                       // event saved as variable
+            
+            b1.ballXPos = e.pageX - $('#canvasOne').offset().left;      //get X position of mouse click
+            b1.ballYPos = e.pageY - $('#canvasOne').offset().top;       //get y position of mouse click
+        
+        });
+
+        var canvas2 = document.getElementById("canvasTwo");             //Canvas 2 for Tic Tac Toe
+        var ctx2 = canvas2.getContext("2d");                            //Pen for tic tac toe
+        var count = 0;                                                  //count spaces used
+
+        class grid {                                                    //grid object
+            
+            constructor(){                                              //unused constructor
+                
+            }
+ 
+ //Much easier ways to implement the following but time is a factor so, this is my quick option           
+              
+            draw() {                                                    //draw grid
+
+                ctx2.beginPath();                                       //Start path
+                ctx2.moveTo(380 / 3 , 50);                              //move pen ro x and y
+                ctx2.lineTo(380 / 3 , 350);                             //create line to x and y
+                ctx2.stroke();                                          //start stroke
+
+                ctx2.beginPath();                                   
+                ctx2.moveTo(380 / 3 + (380 / 3) , 50);
+                ctx2.lineTo(380 / 3 + (380 / 3), 350);
+                ctx2.stroke();
+
+                ctx2.beginPath();
+                ctx2.moveTo( 380 / 3 -100, 150);
+                ctx2.lineTo( 380 / 3* 2 + 100, 150);
+                ctx2.stroke();
+
+                ctx2.beginPath();
+                ctx2.moveTo( 380 / 3 -100, 250);
+                ctx2.lineTo( 380 / 3* 2 + 100, 250);
+                ctx2.stroke();
+
+            }		
+        
+        };
+
+//the assignment was for a square and O but i wanted to use my own method, and wanted to keep the X options.
+//This should be ok as the square was easier to create
+
+// O objects
+        class objectO {
+
+//Constructor O's
+            constructor(xPos, yPos, radius, startPoint){
+                
+                this.xPos   = xPos;                            //Ball Y position
+                this.yPos   = yPos;                            //Ball X position
+                this.radius = radius;                          //Ball Radius
+                this.startPoint = startPoint;                  //Starting point for Drawing
+            }
+
+            draw() {
+
+                    ctx2.fillStyle = "Black";                                             
+                    ctx2.beginPath();                                                     /* Start the cicle */
+                    ctx2.arc(this.xPos, this.yPos, this.radius, this.startPoint, 2*Math.PI);//create cicrle
+
+                    ctx2.strokeStyle="black";                                            
+                    ctx2.lineWidth = 4;                                                     //Line width
+
+                    ctx2.stroke();                                                          //Stroke
+            }	
+
+            move(x, y)                                          /* Move the O along the x and y axis*/
+            {
+                this.xPos += x;                                 //move circle
+                this.yPos += y;
+            }	
+        
+        };
+
+        class objectX {                                         //X objects
+
+            constructor(xPos, yPos, radius){
+                
+                this.xPos   = xPos;                            //Ball Y position
+                this.yPos   = yPos;                            //Ball X position
+                this.radius = radius;                          //Ball Radius
+            }
+
+            draw() {
+
+                // Draw X as an object, by drawing from the centre of the square
+
+                ctx2.beginPath();
+                ctx2.moveTo(this.xPos , this.yPos);
+                ctx2.lineTo(this.xPos + this.radius,this.yPos - this.radius);
+                ctx2.moveTo(this.xPos , this.yPos);
+                ctx2.lineTo(this.xPos - this.radius,this.yPos - this.radius);
+                ctx2.moveTo(this.xPos , this.yPos);
+                ctx2.lineTo(this.xPos + this.radius,this.yPos + this.radius);
+                ctx2.moveTo(this.xPos , this.yPos);
+                ctx2.lineTo(this.xPos - this.radius,this.yPos + this.radius);
+                ctx2.stroke();
+            }	
+
+            move(x, y)                                         /* Move the O along the x and y axis*/
+            {
+                this.xPos += x;
+                this.yPos += y;
+            }	
+        
+        };
+
+        const g1 = new grid();                                  //Grid object
+
+
+        g1.draw();                                              //Draw Grid
+
+        var guide = [                                           //Guide used to determine winner
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
+        ];
+
+        var choice = 1;                                         //Used to validate winner
+
+        canvas2.addEventListener("click", function(event) {     //mouse click event
+
+            var e = window.event;                               //event
+            var x3;
+            var y3;
+
+            posX = e.pageX - $('#canvasTwo').offset().left;     //x pos of mouse
+            posY = e.pageY - $('#canvasTwo').offset().top;      //y pos of mouse
+
+            var newO = new objectO(0,0, 40 ,0);                 //new X object
+            var newX = new objectX(0,0, 40);                    //New O object
+            
+
+            
+        //Top Left Grid
+            if( ( (posY > 50) && (posY < 150) && (posX > 50)  && (posX < 380 / 3) ) && (guide[1][0] == 0)){
+                x3 = 380 / 3 - 50;
+                y3 = 100; 
+                guide[1][0] = choice;
+                guide[4][0] += choice;
+                guide[1][3] += choice;
+                guide[4][3] += choice;
+                count++;
+            }
+        //Top Centre Grid
+            else if( (posY > 50) && (posY < 150) && (posX > 150)  && (posX < 380 / 3 + 100) && (guide[1][1] == 0)){
+                x3 = 380 / 3 + 65;
+                y3 = 100; 
+                guide[1][1] = choice;
+                guide[4][1] += choice;
+                guide[1][3] += choice;
+                count++;
+            }
+        //Top Right Grid    
+            else if( (posY > 50) && (posY < 150) && (posX > 250)  && (posX < 380 / 3 + 200) && (guide[1][2] == 0)){
+                x3 = 380 / 3 + 175;
+                y3 = 100; 
+                guide[1][2] = choice;
+                guide[4][2] += choice;
+                guide[1][3] += choice;
+                guide[0][3] += choice;
+                count++;
+            }
+        //Mid Left Grid    
+            else if( (posY > 150) && (posY < 225) && (posX > 50)  && (posX < 380 / 3) && (guide[2][0] == 0)){
+                x3 = 380 / 3 - 50;
+                y3 = 200;
+                guide[2][0] = choice; 
+                guide[2][3] += choice;
+                guide[4][0] += choice;
+                count++;
+            }
+        //Mid Centre Grid    
+            else if( (posY > 150) && (posY < 225) && (posX > 380 / 3)  && (posX < 380 / 3 + 100) && (guide[2][1] == 0)){
+                x3 = 190;
+                y3 = 200; 
+                guide[2][1] = choice;
+                guide[2][1] += choice;
+                guide[0][3] += choice;
+                guide[4][3] += choice;
+                guide[4][1] += choice;
+                count++;
+            }
+        //Mid Right Grid    
+            else if( ((posY > 150) && (posY < 225) && (posX > 250)  && (posX < 380 / 3 + 200)) && (guide[2][2] == 0)){
+                x3 = 380 / 3 + 175;
+                y3 = 200; 
+                guide[2][2] = choice;
+                guide[2][3] += choice;
+                guide[4][2] += choice;
+                count++;
+            }
+        //Bottom Left Grid    
+            else if( (posY > 225) && (posY < 350) && (posX > 50)  && (posX < 380 / 3) && (guide[3][0] == 0)){
+                x3 = 380 / 3 - 50;
+                y3 = 300;
+                guide[3][0] = choice;
+                guide[4][0] += choice;
+                guide[0][3] += choice;
+                guide[3][3] += choice;
+                count++;
+            }
+        //Bottom Centre Grid    
+            else if( (posY > 225) && (posY < 350) && (posX > 150)  && (posX < 380 / 3 + 100) && (guide[3][1] == 0)){
+                x3 = 380 / 3 + 65;
+                y3 = 300;
+                guide[3][1] = choice;
+                guide[4][1] += choice;
+                guide[3][3] += choice;
+                count++;
+            }
+        //Bottom Right Grid    
+            else if( (posY > 225) && (posY < 350) && (posX > 250)  && (posX < 380 / 3 + 200) && (guide[3][2] == 0)){
+                x3 = 380 / 3 + 175;
+                y3 = 300;
+                guide[3][2] = choice;
+                guide[4][2] += choice;
+                guide[3][3] += choice;
+                guide[4][3] += choice;
+                count++;
+            }
+
+            
+            //determine if X or O
+            if( count % 2 == 0 ){
+                choice = 1;
+                newX.move(x3,y3);
+                newX.draw();
+            }
+            else{
+                choice = 10;
+                newO.move(x3,y3);
+                newO.draw();
+            }
+
+//loop through guide, to test if X or O win, then reset
+            for(var i = 0; i < 4; i++){
+
+                if( guide[4][i] == 3 ){
+                    choice = 1;
+                    console.log("O's Win");
+                    count = 0;
+                    ctx2.clearRect(0, 0, 380, 520);
+                    g1.draw();
+                    
+                    guide = [
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0]
+                    ];
+
+                }
+
+                if( guide[4][i] == 30 ){
+                    choice = 1;
+                    console.log("X's Win");
+                    count = 0;
+                    ctx2.clearRect(0, 0, 380, 520);
+                    g1.draw();
+                    
+                    guide = [
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0]
+                    ];
+                }
+                
+                if( guide[i][3] == 3 ){
+                    choice = 1;
+                    console.log("O's Win");
+                    count = 0;
+                    ctx2.clearRect(0, 0, 380, 520);
+                    g1.draw();
+                    
+                    guide = [
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0]
+                    ];
+
+                }
+
+                if( guide[i][3] == 30 ){
+                    choice = 1;
+                    console.log("X's Win");
+                    count = 0;
+                    ctx2.clearRect(0, 0, 380, 520);
+                    g1.draw();
+                    
+                    guide = [
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0]
+                    ];
+                }
+
+            }
+
+//If game reaches last square and no winner, make it a draw
+            if(count == 9){
+                choice = 1;
+                console.log("There is a DRAW");
+                count = 0;
+                ctx2.clearRect(0, 0, 380, 520);
+                g1.draw();
+                
+                guide = [
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0]
+                ];
+
+            }
+    
+        });
+
+        
+        
+    </script>
+
+  </body>
+
+</html>
