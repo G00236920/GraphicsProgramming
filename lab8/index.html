@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <title>Intro to 3D</title>
+
+        <style type="text/css">
+
+        </style>
+
+    </head>
+
+    <body>
+        
+        <!-- three.js -->
+        <script src="js/three.js"></script>
+
+        <!-- custom javascript -->
+        <script type="text/javascript">
+
+            //Scene
+            var scene = new THREE.Scene();
+
+            //sphere
+            var geometry = new THREE.SphereGeometry( 5, 32, 32 );
+            var material = new THREE.MeshLambertMaterial( {color: 0x00ff00} );
+            var sphere = new THREE.Mesh( geometry, material );
+
+            scene.add( sphere );
+
+            //Camera
+            var camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.1, 1000 );
+            var helper = new THREE.CameraHelper( camera );
+
+            scene.add( helper );
+            camera.position.set(0,0,800);
+            camera.position.z = 40;
+
+            //Render
+            var renderer = new THREE.WebGLRenderer();
+
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild(renderer.domElement);
+
+            //Directional Light
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+
+            directionalLight.position.set(0, 1, 2);
+            scene.add(directionalLight);
+
+           repeatMe();
+
+    
+            //RepeatMe
+            function repeatMe(){
+
+                //render screen using Recursion
+                renderer.render(scene, camera);
+                requestAnimationFrame(repeatMe);
+
+                //Move Ball Left to right on Scene
+
+            };
+
+        </script>
+    </body>
+</html>

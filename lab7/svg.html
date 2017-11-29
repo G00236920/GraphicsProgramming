@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<!-- LAB 7 -->
+
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Transformations</title>
+
+		<style type="text/css">
+
+			circle {
+				fill: rgba(255, 255, 0, 0.486);
+				stroke:black; 
+				stroke-width: 2;
+				stroke-opacity: 0.8;
+			}
+
+		</style>
+
+	</head>
+
+	<body>
+		<svg width="500" height="500">	<!-- SVG Template -->
+
+			<!--  the Rectangle -->
+			<rect id="rectangle" x="10" y="10" width="100" height="200" style ="fill:rgba(96, 96, 168, 0.616); stroke:rgb(182, 3, 36); stroke-width:2;" />
+
+			<!-- Create a circle -->
+			<circle id="circle" cx="100" cy="100" r="20" color=""/>
+
+			<!-- Insert Name -->
+			<text id="myName" x="50" y="50" fill="blue" font-size="24">Michael</text>
+
+			<!-- Create Pacman -->
+			<path 	d = "M 200 200 A 45 45 0 1 1 245 245 L 245 200 Z"
+					fill = "yellow"
+					stroke = "black"
+					transform = "rotate(225 200 180)"/>
+
+		</svg>
+
+		<!--JAVASCRIPT-->
+		<script>
+		
+			setInterval( function(){
+
+				//Move Circle to the points 120x and 120y after 1 second
+				document.getElementById("circle").setAttribute("cx", "120");
+				document.getElementById("circle").setAttribute("cy", "120");
+				
+			}, 1000);
+
+			setInterval(function(){
+
+				//Change the circle to green after 2 seconds
+				circle.style.fill='green';
+
+			}, 2000);
+
+		</script>
+
+
+	</body>
+	
+</html>
