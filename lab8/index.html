@@ -19,15 +19,31 @@
         <!-- custom javascript -->
         <script type="text/javascript">
 
+            var moveX = 0;
+            var moveY = 0;
+            var moveZ = 1;
+            var directionX = 1;
+            var directionY = 1;
+            var directionZ = 1;
+
             //Scene
             var scene = new THREE.Scene();
+
+            
 
             //sphere
             var geometry = new THREE.SphereGeometry( 5, 32, 32 );
             var material = new THREE.MeshLambertMaterial( {color: 0x00ff00} );
+            //material.wireframe = true;
+
             var sphere = new THREE.Mesh( geometry, material );
 
+            
+            sphere.castShadow = true;
+            sphere.receiveShadow = true;
+        
             scene.add( sphere );
+
 
             //Camera
             var camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -35,21 +51,50 @@
 
             scene.add( helper );
             camera.position.set(0,0,800);
-            camera.position.z = 40;
+            camera.position.z = 50;
 
             //Render
             var renderer = new THREE.WebGLRenderer();
-
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             renderer.setSize( window.innerWidth, window.innerHeight );
             document.body.appendChild(renderer.domElement);
-
+            
             //Directional Light
             var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 
             directionalLight.position.set(0, 1, 2);
             scene.add(directionalLight);
+            
+            /* create the light */
+            var spotLight = new THREE.SpotLight( 0xffffff); 
+            spotLight.position.set(10, 20, 3);
+            spotLight.angle = Math.PI/4;
+            spotLight.penumbra = 0.5;
+            spotLight.decay = 0.1;
+            spotLight.distance = 600;
+            spotLight.castShadow = true;
+            spotLight.shadowDarkness = 0.5;
+            spotLight.shadowCameraVisible = true;
 
-           repeatMe();
+            scene.add(spotLight)
+            
+            //Plane
+            //Back wall
+
+            var bWallZ = 0.1;
+            var boxGeometry = new THREE.BoxGeometry(150, 90, bWallZ);
+
+            var material = new THREE.MeshPhongMaterial( {color: 0xffffcc, dithering: true} );
+            var plane = new THREE.Mesh( boxGeometry, material );
+
+            plane.position.set(0, 0, -20);
+            plane.castShadow = true;
+            plane.receiveShadow = false;
+        
+            scene.add( plane );
+
+            repeatMe();
 
     
             //RepeatMe
@@ -58,6 +103,48 @@
                 //render screen using Recursion
                 renderer.render(scene, camera);
                 requestAnimationFrame(repeatMe);
+
+                sphere.position.set(moveX, moveY, moveZ);
+                sphere.castShadow = true;
+                plane.receiveShadow = false;
+                
+
+                    if(moveX > 49){
+                        
+                        directionX = -.4;
+                        
+                    }
+                    if(moveX < -49){
+                        
+                        directionX = .5;
+                        
+                    }
+
+                    if(moveY > 49){
+                        
+                        directionY = -.3;
+                        
+                    }
+                    if(moveY < -49){
+                        
+                        directionY = .5;
+                        
+                    }
+                    if(moveZ > 10){
+                        
+                        directionZ = -1;
+                        
+                    }
+                    if(moveZ < -15){
+                        
+                        directionZ = 1;
+                        
+                    }
+
+
+                moveX += directionX;
+                moveY += directionY;
+                moveZ += directionZ;
 
                 //Move Ball Left to right on Scene
 
